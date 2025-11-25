@@ -1,0 +1,20 @@
+.detail-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.detail-card {
+  width: 500px;
+}
+
+.product-img {
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.price {
+  color: green;
+  font-weight: bold;
+  font-size: 22px;
+}
