@@ -4,6 +4,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { Product, ProductService } from '../../../core/services/product';
 
 @Component({
   selector: 'app-product-list',
@@ -20,12 +21,28 @@ import { RouterLink } from '@angular/router';
 })
 export class ProductListComponent {
 
-  products = [
-    { id:1, name:"Shirt", price:499, imageUrl:"https://via.placeholder.com/300" },
-    { id:2, name:"Shoes", price:999, imageUrl:"https://via.placeholder.com/300" }
-  ];
+    products:any=[];
+    constructor(private productService: ProductService) {}
 
-  addToCart(product: any) {
-    console.log("ADD TO CART", product);
+    ngOnInit(): void {
+    this.loadProducts();
   }
+
+  loadProducts() {
+    this.productService.getAll().subscribe({
+      next: (data) => (this.products = data),
+      error: (err) => console.error('Error loading products:', err)
+    });
+  }
+
+  addToCart(product: Product) {
+    console.log('Add to cart:', product);
+  }
+
+//   products = [
+//     { id:1, name:"Shirt", price:499, imageUrl:"https://via.placeholder.com/300" },
+//     { id:2, name:"Shoes", price:999, imageUrl:"https://via.placeholder.com/300" }
+//   ];
+
+
 }
