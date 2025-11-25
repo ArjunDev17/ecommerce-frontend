@@ -1,0 +1,19 @@
+<div class="detail-container">
+  <mat-card class="detail-card">
+
+    <img mat-card-image [src]="product.imageUrl" class="product-img" />
+
+    <mat-card-content>
+      <h2>{{ product.name }}</h2>
+      <p class="description">{{ product.description }}</p>
+      <h3 class="price">₹{{ product.price }}</h3>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="addToCart()">
+        Add to Cart
+      </button>
+    </mat-card-actions>
+
+  </mat-card>
+</div>

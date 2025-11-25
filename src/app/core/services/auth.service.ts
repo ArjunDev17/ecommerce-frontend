@@ -7,27 +7,18 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private BASE_URL = 'http://localhost:8081/api/auth';
+  private api = 'http://localhost:8080/api/auth';
 
   constructor(private http: HttpClient) {}
 
-  login(payload: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/login`, payload);
+  // FIXED — Now it accepts ONLY 2 params
+  login(email: string, password: string): Observable<any> {
+    const payload = { email, password };
+    return this.http.post(`${this.api}/login`, payload);
   }
 
-  saveToken(token: string) {
-    localStorage.setItem('token', token);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+  register(name: string, email: string, password: string): Observable<any> {
+    const payload = { name, email, password };
+    return this.http.post(`${this.api}/register`, payload);
   }
 }

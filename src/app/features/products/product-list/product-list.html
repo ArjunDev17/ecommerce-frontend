@@ -1,0 +1,26 @@
+<div class="product-list-container">
+  <mat-grid-list cols="4" gutterSize="20px" rowHeight="350px">
+
+    <mat-grid-tile *ngFor="let product of products">
+      <mat-card class="product-card">
+        <img mat-card-image [src]="product.imageUrl" alt="product" />
+
+        <mat-card-content>
+          <h3>{{ product.name }}</h3>
+          <p class="price">₹{{ product.price }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-raised-button color="primary"
+            [routerLink]="['/products', product.id]">
+            View
+          </button>
+          <button mat-button color="accent" (click)="addToCart(product)">
+            Add to Cart
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>
