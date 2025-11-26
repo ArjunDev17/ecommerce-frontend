@@ -9,9 +9,11 @@ import { CartComponent } from './features/cart/cart';
 import { AdminDashboardComponent } from './features/admin/dashboard/dashboard';
 import { ProductFormComponent } from './features/products/product-form/product-form';
 import { OrderListComponent } from './features/orders/order-list/order-list';
-import { adminRoutes } from './admin/admin.routes';
+import { adminRoutes } from './features/admin/admin.routes';
+import { WelcomeComponent } from './features/welcome/welcome';
 
 export const routes: Routes = [
+   { path: '', component: WelcomeComponent },
   { path: '', redirectTo: 'products', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
@@ -21,8 +23,6 @@ export const routes: Routes = [
   { path: 'products/:id', component: ProductDetailComponent },
 
   { path: 'cart', component: CartComponent },
-
-//  { path: 'admin', component: AdminDashboardComponent },
   { path: 'products/new', component: ProductFormComponent },
   { path: 'products/:id/edit', component: ProductFormComponent },
   { path: 'orders', component: OrderListComponent },
@@ -34,6 +34,11 @@ export const routes: Routes = [
     path: 'admin',
     children: adminRoutes  // ✅ Mount admin module routing
   },
+  {
+  path: 'admin',
+  loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes)
+}
+,
   {
     path: '',
     loadComponent: () =>
