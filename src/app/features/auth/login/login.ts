@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
+// Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,25 +15,43 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './login.html',
   styleUrl: './login.scss',
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-  email: string = '';
-  password: string = '';
+  /** Reactive Form */
+  loginForm!: FormGroup;
 
   constructor(
+    private fb: FormBuilder,
     private auth: AuthService,
     private router: Router
   ) {}
 
-  onSubmit() {
-    this.auth.login(this.email, this.password).subscribe({
+  /** Create form */
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
+
+  /** Submit login */
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const { email, password } = this.loginForm.value;
+
+    this.auth.login(email!, password!).subscribe({
       next: () => this.router.navigate(['/products']),
       error: () => alert("Invalid credentials")
     });
