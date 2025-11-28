@@ -14,7 +14,8 @@ export interface Product {
 export class ProductService {
   private http = inject(HttpClient);
 
-  private BASE_URL = 'http://localhost:9090/api/products';
+  private BASE_URL = 'http://localhost:9091/api/products';
+  
 
   getAll(): Observable<Product[]> {
     return this.http.get<Product[]>(this.BASE_URL);

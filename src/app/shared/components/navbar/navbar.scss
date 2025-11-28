@@ -1,9 +1,96 @@
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
+/* Toolbar Base */
+.custom-toolbar {
+  background: linear-gradient(135deg, #3b5bdb, #00b4d8);
+  height: 70px;
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+
+  /* Glass effect */
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
 }
 
+/* Logo with fade + slight slide */
+.animated-logo {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  gap: 8px;
+
+  animation: fadeSlide 0.9s ease-out;
+}
+
+.animated-logo mat-icon {
+  font-size: 26px;
+}
+
+/* Spacer */
 .spacer {
-  flex: 1 1 auto;
+  flex: 1;
+}
+
+/* NAV LINKS */
+.nav-link {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  color: #eef7ff !important;
+  text-transform: none;
+  padding: 6px 14px;
+
+  transition: 0.3s ease-in-out;
+}
+
+/* Hover Animation: Underline grows smoothly */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: #ffe066;
+  border-radius: 10px;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 55%;
+}
+
+/* Active route highlight */
+.active-link {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px;
+}
+
+.active-link::after {
+  width: 60%;
+}
+
+/* Slide-in animation for links */
+.animated-link {
+  opacity: 0;
+  animation: slideIn 0.6s forwards;
+}
+
+/* Delay each link for stagger effect */
+.animated-link:nth-child(1) { animation-delay: 0.2s; }
+.animated-link:nth-child(2) { animation-delay: 0.3s; }
+.animated-link:nth-child(3) { animation-delay: 0.4s; }
+
+/* Animations */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

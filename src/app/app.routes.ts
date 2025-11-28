@@ -1,49 +1,35 @@
 import { Routes } from '@angular/router';
-
-import { LoginComponent } from './features/auth/login/login';
-import { RegisterComponent } from './features/auth/register/register';
-import { ProductListComponent } from './features/products/product-list/product-list';
-import { ProductDetailComponent } from './features/products/product-detail/product-detail';
-import { CartComponent } from './features/cart/cart';
-
-import { AdminDashboardComponent } from './features/admin/dashboard/dashboard';
-import { ProductFormComponent } from './features/products/product-form/product-form';
-import { OrderListComponent } from './features/orders/order-list/order-list';
-import { adminRoutes } from './features/admin/admin.routes';
-import { WelcomeComponent } from './features/welcome/welcome';
+import { HomeComponent } from './features/home/home';
 
 export const routes: Routes = [
-   { path: '', component: WelcomeComponent },
-  { path: '', redirectTo: 'products', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
 
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-
-  { path: 'products', component: ProductListComponent },
-  { path: 'products/:id', component: ProductDetailComponent },
-
-  { path: 'cart', component: CartComponent },
-  { path: 'products/new', component: ProductFormComponent },
-  { path: 'products/:id/edit', component: ProductFormComponent },
-  { path: 'orders', component: OrderListComponent },
+  // Auth
   {
-    path: 'admin',
-    children: adminRoutes
+    path: 'auth/login',
+    loadComponent: () => import('./features/auth/login/login').then(m => m.LoginComponent)
   },
   {
-    path: 'admin',
-    children: adminRoutes  // ✅ Mount admin module routing
+    path: 'auth/register',
+    loadComponent: () => import('./features/auth/register/register').then(m => m.RegisterComponent)
   },
+
+  // Admin
   {
   path: 'admin',
-  loadChildren: () => import('./features/admin/admin.routes').then(m => m.adminRoutes)
-}
-,
+  loadChildren: () =>
+    import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES)
+},
+
+
+  // Products
   {
-    path: '',
+    path: 'products',
     loadComponent: () =>
-      import('./features/products/product-list/product-list')
-        .then(m => m.ProductListComponent)
-  }
-  
+      import('./features/products/product-list/product-list').then(
+        m => m.ProductListComponent
+      )
+  },
+
+  { path: '**', redirectTo: '' }
 ];

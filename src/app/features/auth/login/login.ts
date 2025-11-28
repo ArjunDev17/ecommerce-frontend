@@ -1,59 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
-
-// Angular Material
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  templateUrl: './login.html',
-  styleUrl: './login.scss',
   imports: [
-    ReactiveFormsModule,
-    RouterLink,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatSnackBarModule,
+    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    MatCardModule
-  ]
+    MatProgressSpinnerModule,
+    MatButtonModule
+  ],
+  templateUrl: './login.html',
+  styleUrls: ['./login.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
-  /** Reactive Form */
-  loginForm!: FormGroup;
+  username = '';
+  password = '';
+  loading = false;
 
   constructor(
-    private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private snackbar: MatSnackBar
   ) {}
 
-  /** Create form */
-  ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
-  }
-
-  /** Submit login */
-  onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
+  login() {
+    if (!this.username || !this.password) {
+      this.snackbar.open('Please enter username and password', 'Close', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
       return;
     }
 
-    const { email, password } = this.loginForm.value;
+    this.loading = true;
 
-    this.auth.login(email!, password!).subscribe({
-      next: () => this.router.navigate(['/products']),
-      error: () => alert("Invalid credentials")
+    this.auth.login({ username: this.username, password: this.password }).subscribe({
+      next: () => {
+        this.loading = false;
+        this.snackbar.open('Login successful! 🎉', 'Close', {
+          duration: 2500,
+          panelClass: ['success-snackbar']
+        });
+        this.router.navigate(['/products']);
+      },
+      error: () => {
+        this.loading = false;
+        this.snackbar.open('Invalid username or password ❌', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+      }
     });
   }
 }

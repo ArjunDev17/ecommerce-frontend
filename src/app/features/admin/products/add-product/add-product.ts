@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { ProductService } from '../../product.service';
 
 @Component({
   selector: 'app-add-product',
@@ -39,13 +40,12 @@ export class AddProductComponent {
 
   previewImage: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder ,private service: ProductService) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       price: [null, [Validators.required, Validators.min(1)]],
       stock: [null, [Validators.required, Validators.min(0)]],
-      category: ['', Validators.required],
-      image: [null, Validators.required]
+      category: ['', Validators.required]
     });
   }
 
@@ -63,13 +63,26 @@ export class AddProductComponent {
     reader.readAsDataURL(file);
   }
 
-  onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
 
-    console.log('Final form data:', this.form.value);
-    alert('Product Saved Successfully! 🎉');
+onSubmit() {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
   }
+
+  this.service.addProductJson(this.form.value).subscribe({
+    next: (res) => {
+      console.log('API Response:', res);
+      alert('Product Saved Successfully! 🎉');
+    },
+    error: (err) => {
+      console.error('Error occurred:', err);
+      alert('Something went wrong. Please try again.');
+    }
+  });
+
+  console.log('Final form data:', this.form.value);
+}
+
+
 }

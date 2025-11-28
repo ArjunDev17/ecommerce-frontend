@@ -54,17 +54,7 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Product Image -->
-    <div class="image-upload-container">
-      <label class="upload-label">
-        <mat-icon>upload</mat-icon>
-        Upload Product Image
-        <input type="file" accept="image/*" (change)="onImageSelect($event)" hidden />
-      </label>
 
-      <!-- Image Preview -->
-      <img *ngIf="previewImage" [src]="previewImage" class="preview-image" />
-    </div>
 
     <button 
       mat-raised-button 
