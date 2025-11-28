@@ -43,6 +43,9 @@ export class ProductListComponent {
 //     { id:1, name:"Shirt", price:499, imageUrl:"https://via.placeholder.com/300" },
 //     { id:2, name:"Shoes", price:999, imageUrl:"https://via.placeholder.com/300" }
 //   ];
+trackById(index: number, item: any) {
+  return item.id;
+}
 
 
 }

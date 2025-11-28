@@ -1,9 +1,19 @@
 <mat-toolbar color="primary">
-  <span class="logo" routerLink="/">Ecommerce</span>
+  <span class="logo">Ecommerce</span>
 
   <span class="spacer"></span>
 
-  <button mat-button routerLink="/products">Products</button>
-  <button mat-button routerLink="/cart">Cart</button>
-  <button mat-button routerLink="/login">Login</button>
+  <a mat-button routerLink="/">Home</a>
+  <a mat-button routerLink="/products">Products</a>
+  
+
+  <span class="spacer"></span>
+
+  <ng-container *ngIf="auth.isLoggedIn$ | async; else guest">
+    <button mat-button (click)="logout()">Logout</button>
+  </ng-container>
+
+  <ng-template #guest>
+    <a mat-button routerLink="/auth/login">Login</a>
+  </ng-template>
 </mat-toolbar>
